@@ -10,10 +10,11 @@ Created on Mon Apr  6 10:27:20 2015
 import random
 import pylab
 import numpy
+import math
 import matplotlib as mpl
 
 import sys
-sys.setrecursionlimit=10**7
+sys.setrecursionlimit=10**8
 '''
 increase the system's tolerance of recursion limits
 '''
@@ -79,53 +80,156 @@ def notcomp(m):
         return False
     return True
     
-def perco(m,loc):
+def perco(m,loc,x,v1,v2):
     '''
     use recursion to assign the percolated pointed value 1
     '''
     (i,j)=loc
-    m[i][j]=1
-    if -1 in adjvs(m,loc):
+    m[i][j]=v2
+    x=x+1
+    if v1 in adjvs(m,loc):
         for (i1,j1) in adj(m,loc):
-            if m[i1][j1]==-1:
-                perco(m,(i1,j1))
+            if m[i1][j1]==v1:
+                x=perco(m,(i1,j1),x,v1,v2)
+    return x
         
 def main(n):
     '''
     the main function, which takes n as the argument and procduce the 
     simulation for percolation, return the grid and the proportion of occupation
+    and the number of grid points in spanning cluster
     '''
     m=gene(n)
     locs=genlocs(n)
+    x=0
     while notcomp(m):
         (i,j)=ranpop(locs)
         if i==n-1 or (1 in adjvs(m,(i,j))):
-            perco(m,(i,j))
+            x=perco(m,(i,j),x,-1,1)
         else:
             m[i][j]=-1
-        print n**2-len(locs)
-        mplot(m)
     p=float((n**2-len(locs)))/n**2
-    return (m,p)
+    y=clucount(m,(i,j))
+    return (m,p,y)
+
+def clucount(m,loc):
+    y=0
+    y=perco(m,loc,y,1,2)
+    return y
     
 def mplot(m,name=''):
     '''
     plot the grid
     if there is another argument called name is assigned a non-empty value
-    the picture would be saved under that name
+    the picture would be saved under that name in the format of eps
     '''
-    cmap = mpl.colors.ListedColormap(['red','white','blue'])
-    pylab.imshow(numpy.array(m),cmap=cmap,vmin=-1,vmax=1,origin='lower',interpolation='nearest')
+    cmap = mpl.colors.ListedColormap(['red','white','darkblue','blue'])
+    pylab.imshow(numpy.array(m),cmap=cmap,vmin=-1,vmax=2,origin='lower',interpolation='nearest')
     pylab.xlabel('x')
     pylab.ylabel('y')
+    
     if name!='':
         pylab.savefig(name+'.eps')
+        
     pylab.show()
+    pylab.close()
+
+def pcplot(ns,pcs,name=''):
+    '''
+    plot 1/n vs pc
+    find value of pc at value 0
+    '''
+    nrecis=[1.0/n for n in ns]
+    pylab.plot(nrecis,pcs)
+    pylab.grid()
+    pylab.xlabel('1/n')
+    pylab.ylabel('Pc')
+    '''
+    fit to find pc at 0?----------------------------------CHANGE HERE
+    '''
+    if name!='':
+        pylab.savefig(name+'.eps')
+        
+    pylab.show()
+    pylab.close()
     
+    #return pc0
+
+def fplot(dps,fs,name=''):
+    '''
+    plot F vs p-pc(dp as delta-p)
+    find value of beta
+    '''
+    pylab.scatter(dps,fs) # The masses and maximum radii are plotted
+    pylab.xlabel('ln of p-pc') # Plot parameters labeled
+    pylab.ylabel('ln of F')
+    '''
+    linefit?---------------------------------------------CHANGE HERE
+    '''
+    if name!='':
+        pylab.savefig(name+'.eps')
+        
+    pylab.show() 
+    pylab.close()
     
+    #return beta
+    
+def part(k,runs):
+    '''
+    the function that takes care of different parts
+    '''
+    print 
+    print 'part',k
+    
+    if k=='a':
+        ns=[5,10,15,20,30,50,80]
+        
+        pcs=[]
+        msamples=[]
+        
+        for n in ns:
+            ps=[]
+            for t in range(runs):
+                (m,p,x)=main(n)
+                ps+=[p]
+            pcs+=[sum(ps)/runs]
+            msamples+=[m]     
+        
+        mplot(m)
+        pcplot(ns,pcs) 
+    
+    if k=='b':
+        n=100
+        pys=[]
+        
+        for t in range(runs):
+            (m,p,y)=main(n)
+            pys+=[(p,y)]
+        pc=sum([p for (p,y) in pys])/runs
+        
+        fs=[]
+        dps=[]
+        
+        for (p,y) in pys:
+            if p>pc:
+                fs+=[math.log(float(y)/(p*n**2))]
+                dps+=[math.log(p-pc)]
+        mplot(m)
+        fplot(fs,dps)
+        
+
+n=6
+print 'trial for n='+str(n)
+(m,p,y)=main(n)
+mplot(m)
+print p
+print y
+
+
+ks=['a','b']
 '''
-n=50
-for k in range(10):
-    (m,p)=main(n)
-    print 'p is', p
+change the number of runs here
 '''
+runs=30
+for k in ks:
+    part(k,runs)
