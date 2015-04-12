@@ -14,7 +14,7 @@ import math
 import matplotlib as mpl
 
 import sys
-sys.setrecursionlimit=10**12
+sys.setrecursionlimit(10**9)
 '''
 increase the system's tolerance of recursion limits
 '''
