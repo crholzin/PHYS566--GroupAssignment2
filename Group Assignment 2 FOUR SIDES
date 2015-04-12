@@ -220,7 +220,7 @@ def part(k,runs):
                 fs+=[math.log(float(y)/(p*n**2))]
                 dps+=[math.log(p-pc)]
         mplot(m)
-        fplot(fs,dps)
+        fplot(dps,fs)
 
 n=6
 print 'trial for n='+str(n)
