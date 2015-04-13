@@ -16,23 +16,25 @@ import matplotlib as mpl
 import sys
 sys.setrecursionlimit(10**9)
 '''
-increase the system's tolerance of recursion limits
+increase the system's tolerance of recursion limits; since functions are used instead of loops, this is important
 '''
 
 def gene(n):
     '''
-    generate a list of lists that store the info of each grid point
+    generate a list of lists that stores the information of each grid point
     with sets denoting its state
     if it is empty then it has value set([])
-    the sites of four sides have value set([1]), set([2]), set([3]), set([4]) respectively
-    if the cluster has touched one edge, its value will be added by e.g set([3]) for the 3rd side
+    the sites of four sides (edges) have values set([1]), set([2]), set([3]), set([4]) respectively
+    if the cluster has touched one edge, its value will be added by the set corresponding to that edge;
+    e.g. if the cluster has touched the 3rd side, then its value is added to set([3]) 
+    in this assignment, the notion of the set is critical for coding
     '''
     
     return [[set([1])]*(n+2)]+ [ [set([2])]+[set([]) for i in range(n)]+[set([3])] for j in range(n) ] +[[set([4])]*(n+2)]
 
 def genlocs(n):
     '''
-    generate a list of all initial available locations in tuples
+    generate a list of all initial available locations in tuples; n gives the dimensionality used
     '''
     locs=[]
     for i in range(1,n+1):
@@ -43,7 +45,7 @@ def genlocs(n):
 def ranpop(locs):
     '''
     randomly choose one the locs (which is a list storing the locations)
-    return the chosen one while removing it from the list locs
+    return the chosen one while removing it from the list locs; this perpetuates the process of percolation as defined here
     '''
     one=random.choice(locs)
     return locs.pop(locs.index(one))
@@ -54,14 +56,14 @@ def adj(m,loc):
     of all occupied grid
     '''    
     (i,j)=loc
-    xys=[(i+1,j),(i-1,j),(i,j+1),(i,j-1)]
-    return [(ii,jj) for (ii,jj) in xys if m[ii][jj]!=set([])]
+    xys=[(i+1,j),(i-1,j),(i,j+1),(i,j-1)] # there are four adjacent points for each site
+    return [(ii,jj) for (ii,jj) in xys if m[ii][jj]!=set([])] 
 
 def adjvs(m,loc):
     '''
     return the values of all adjacent occupied points 
     '''
-    return [m[ii][jj] for (ii,jj) in adj(m,loc)]
+    return [m[ii][jj] for (ii,jj) in adj(m,loc)] # give the corresponding set numbers
 
     
 def perco(m,loc,s):
@@ -87,7 +89,7 @@ def main(n):
     locs=genlocs(n)
     count=0
     (i,j)=(1,1)
-    while m[i][j]!=set([0,1,2,3,4]):
+    while m[i][j]!=set([0,1,2,3,4]): # Checks condition of whether the spanning cluster has been created
         
         (i,j)=ranpop(locs)
         s=set([0])
@@ -128,7 +130,7 @@ def mplot(m,name=''):
             else:
                 line+=[-1]
         mp+=[line]
-    cmap = mpl.colors.ListedColormap(['red','white','blue'])
+    cmap = mpl.colors.ListedColormap(['red','white','blue']) # unoccupied sites are white; spanning cluster is blue; occupied sites not part of the spanning cluster are red
     pylab.imshow(numpy.array(mp),cmap=cmap,vmin=-1,vmax=1,origin='lower',interpolation='nearest')
     pylab.xlabel('x')
     pylab.ylabel('y')
@@ -167,13 +169,13 @@ def fplot(dps,fs,name=''):
     '''
     betavalmat=numpy.polyfit(dps,fs,1)
     betavalue=betavalmat[0]
-    bv=numpy.poly1d(betavalmat)
+    bv=numpy.poly1d(betavalmat) # to plot the line of fit
     j=numpy.linspace(min(dps),max(dps),200)
     yvals=bv(j)
-    pylab.plot(dps,fs,'.',j,yvals,'--') # The masses and maximum radii are plotted
+    pylab.plot(dps,fs,'.',j,yvals,'--') # The masses and maximum radii are plotted along with the line of fit
     pylab.xlabel('ln of p-pc') # Plot parameters labeled
     pylab.ylabel('ln of F')
-    print 'The value of beta equals {betavalue}'.format(betavalue=betavalue)
+    print 'The value of beta equals {betavalue}'.format(betavalue=betavalue) # beta value printed
     
     if name!='':
         pylab.savefig(name+'.eps')
@@ -185,7 +187,7 @@ def fplot(dps,fs,name=''):
     
 def part(k,runs):
     '''
-    the function that takes care of different parts
+    this function gives some of the supplementary information for the various parts
     '''
     print 
     print 'part',k
@@ -238,6 +240,6 @@ ks=['a','b']
 '''
 change the number of runs here
 '''
-runs=50
+runs=200
 for k in ks:
     part(k,runs)
