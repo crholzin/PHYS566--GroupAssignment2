@@ -166,13 +166,14 @@ def fplot(dps,fs,name=''):
     find value of beta
     '''
     betavalmat=numpy.polyfit(dps,fs,1)
-    betavalue=betavalmat[1]
+    betavalue=betavalmat[0]
     bv=numpy.poly1d(betavalmat)
     j=numpy.linspace(min(dps),max(dps),200)
     yvals=bv(j)
     pylab.plot(dps,fs,'.',j,yvals,'--') # The masses and maximum radii are plotted
     pylab.xlabel('ln of p-pc') # Plot parameters labeled
     pylab.ylabel('ln of F')
+    print 'The value of beta equals {betavalue}'.format(betavalue=betavalue)
     
     if name!='':
         pylab.savefig(name+'.eps')
