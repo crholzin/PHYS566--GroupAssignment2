@@ -147,7 +147,7 @@ def pcplot(ns,pcs,name=''):
     plot 1/n vs pc
     find value of pc at value 0
     '''
-        nrecis=[1.0/n for n in ns]
+    nrecis=[1.0/n for n in ns]
     pylab.figure()
     pylab.plot(nrecis,pcs,'bo', label='experimental data')
     pylab.legend(prop={'size':7})
