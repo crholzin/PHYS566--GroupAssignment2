@@ -206,7 +206,7 @@ def part(k,runs):
             pcs+=[sum(ps)/runs]
             msamples+=[m]     
         
-        mplot(m)
+            mplot(m,'a'+str(n))
         pcplot(ns,pcs) 
     
     if k=='b':
