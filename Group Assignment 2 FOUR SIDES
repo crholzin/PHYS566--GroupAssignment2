@@ -135,6 +135,7 @@ def mplot(m,name=''):
     pylab.xlabel('x')
     pylab.ylabel('y')
     
+    
     if name!='':
         pylab.savefig(name+'.eps')
         
@@ -151,6 +152,7 @@ def pcplot(ns,pcs,name=''):
     pylab.grid()
     pylab.xlabel('1/n')
     pylab.ylabel('Pc')
+    pylab.title('Proportion of Spanning Cluster Sites to Occupied Sites')
     '''
     fit to find pc at 0?----------------------------------CHANGE HERE
     '''
@@ -175,6 +177,7 @@ def fplot(dps,fs,name=''):
     pylab.plot(dps,fs,'.',j,yvals,'--') # The masses and maximum radii are plotted along with the line of fit
     pylab.xlabel('ln of p-pc') # Plot parameters labeled
     pylab.ylabel('ln of F')
+    pylab.title('Fitted Results to Power-Law Ansatz')
     print 'The value of beta equals {betavalue}'.format(betavalue=betavalue) # beta value printed
     
     if name!='':
