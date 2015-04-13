@@ -128,7 +128,7 @@ def mplot(m,name=''):
     
     
     if name!='':
-        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpeg')
         
     pylab.show()
     pylab.close()
@@ -156,7 +156,7 @@ def pcplot(ns,pcs,name='Partb1'):
     pylab.show()
 
     if name!='':
-        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpeg')
         
     
     #pylab.close()
@@ -180,7 +180,7 @@ def fplot(dps,fs,name='Partb2'):
     print 'The value of beta equals {betavalue}'.format(betavalue=betavalue) # beta value printed
     
     if name!='':
-        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpeg')
         
     pylab.show() 
     pylab.close()
