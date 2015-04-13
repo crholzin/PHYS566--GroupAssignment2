@@ -147,22 +147,30 @@ def pcplot(ns,pcs,name=''):
     plot 1/n vs pc
     find value of pc at value 0
     '''
-    nrecis=[1.0/n for n in ns]
-    pylab.plot(nrecis,pcs)
-    pylab.grid()
+        nrecis=[1.0/n for n in ns]
+    pylab.figure()
+    pylab.plot(nrecis,pcs,'bo', label='experimental data')
+    pylab.legend(prop={'size':7})
+    #pylab.grid()
     pylab.xlabel('1/n')
     pylab.ylabel('Pc')
-    pylab.title('Proportion of Spanning Cluster Sites to Occupied Sites')
-    '''
-    fit to find pc at 0?----------------------------------CHANGE HERE
-    '''
+    pylab.hold(True)
+    
+    #fit to find pc at 0
+    coefficients = numpy.polyfit(nrecis, pcs,1)
+    polynomial = numpy.poly1d(coefficients)
+    yfit = polynomial(nrecis)
+    pylab.plot(nrecis, yfit,label='fitting curve')
+    pylab.legend(prop={'size':7})
+    pylab.show()
+
     if name!='':
         pylab.savefig(name+'.eps')
         
-    pylab.show()
-    pylab.close()
     
-    #return pc0
+    #pylab.close()
+    
+    print "pc(0) = "+ str(coefficients[1])
 
 def fplot(dps,fs,name=''):
     '''
