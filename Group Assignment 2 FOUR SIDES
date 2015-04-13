@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr  11 10:27:20 2015
-
-@author: kevinhe
-"""
-
-
-
 import random
 import pylab
 import numpy
@@ -142,7 +133,7 @@ def mplot(m,name=''):
     pylab.show()
     pylab.close()
 
-def pcplot(ns,pcs,name=''):
+def pcplot(ns,pcs,name='Partb1'):
     '''
     plot 1/n vs pc
     find value of pc at value 0
@@ -172,7 +163,7 @@ def pcplot(ns,pcs,name=''):
     
     print "pc(0) = "+ str(coefficients[1])
 
-def fplot(dps,fs,name=''):
+def fplot(dps,fs,name='Partb2'):
     '''
     plot F vs p-pc(dp as delta-p)
     find value of beta
