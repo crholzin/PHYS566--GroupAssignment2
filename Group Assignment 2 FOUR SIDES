@@ -104,7 +104,7 @@ def clucount(m):
                 y+=1
     return y
     
-def mplot(m,name=''):
+def mplot(m,name='',d):
     '''
     plot the grid
     if there is another argument called name is assigned a non-empty value
@@ -123,6 +123,7 @@ def mplot(m,name=''):
         mp+=[line]
     cmap = mpl.colors.ListedColormap(['red','white','blue']) # unoccupied sites are white; spanning cluster is blue; occupied sites not part of the spanning cluster are red
     pylab.imshow(numpy.array(mp),cmap=cmap,vmin=-1,vmax=1,origin='lower',interpolation='nearest')
+    pylab.title(d)
     pylab.xlabel('x')
     pylab.ylabel('y')
     
@@ -211,7 +212,7 @@ def part(k,runs):
             pcs+=[sum(ps)/runs]
             msamples+=[m]     
         
-            mplot(m,'a'+str(n))
+            mplot(m,'a'+str(n),n)
             print 'Pc is',p
             print 'Number of sites in spanning cluster is',y
         pcplot(ns,pcs,'a0') 
