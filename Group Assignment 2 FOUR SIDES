@@ -211,7 +211,7 @@ def part(k,runs):
             pcs+=[sum(ps)/runs]
             msamples+=[m]     
         
-            mplot(m,'a'+str(n),n)
+            mplot(m,'a'+str(n))
             print 'Pc is',p
             print 'Number of sites in spanning cluster is',y
         pcplot(ns,pcs,'a0') 
