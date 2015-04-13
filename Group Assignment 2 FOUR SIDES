@@ -128,12 +128,13 @@ def mplot(m,name=''):
     
     
     if name!='':
-        pylab.savefig(name+'.jpeg')
+        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpg')
         
     pylab.show()
     pylab.close()
 
-def pcplot(ns,pcs,name='Partb1'):
+def pcplot(ns,pcs,name=''):
     '''
     plot 1/n vs pc
     find value of pc at value 0
@@ -148,7 +149,7 @@ def pcplot(ns,pcs,name='Partb1'):
     pylab.hold(True)
     
     #fit to find pc at 0
-    coefficients = numpy.polyfit(nrecis, pcs,1)
+    coefficients = numpy.polyfit(nrecis,pcs,3)
     polynomial = numpy.poly1d(coefficients)
     yfit = polynomial(nrecis)
     pylab.plot(nrecis, yfit,label='fitting curve')
@@ -156,14 +157,15 @@ def pcplot(ns,pcs,name='Partb1'):
     pylab.show()
 
     if name!='':
-        pylab.savefig(name+'.jpeg')
+        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpg')
         
     
     #pylab.close()
     
-    print "pc(0) = "+ str(coefficients[1])
+    print "pc(0) = "+ str(coefficients[3])
 
-def fplot(dps,fs,name='Partb2'):
+def fplot(dps,fs,name=''):
     '''
     plot F vs p-pc(dp as delta-p)
     find value of beta
@@ -177,13 +179,14 @@ def fplot(dps,fs,name='Partb2'):
     pylab.xlabel('ln of p-pc') # Plot parameters labeled
     pylab.ylabel('ln of F')
     pylab.title('Fitted Results to Power-Law Ansatz')
-    print 'The value of beta equals {betavalue}'.format(betavalue=betavalue) # beta value printed
     
     if name!='':
-        pylab.savefig(name+'.jpeg')
+        pylab.savefig(name+'.eps')
+        pylab.savefig(name+'.jpg')
         
     pylab.show() 
     pylab.close()
+    print 'The value of beta equals {betavalue}'.format(betavalue=betavalue) # beta value printed
     
     #return beta
     
@@ -203,13 +206,15 @@ def part(k,runs):
         for n in ns:
             ps=[]
             for t in range(runs):
-                (m,p,x)=main(n)
+                (m,p,y)=main(n)
                 ps+=[p]
             pcs+=[sum(ps)/runs]
             msamples+=[m]     
         
             mplot(m,'a'+str(n))
-        pcplot(ns,pcs) 
+            print 'Pc is',p
+            print 'Number of sites in spanning cluster is',y
+        pcplot(ns,pcs,'a0') 
     
     if k=='b':
         n=100
@@ -227,8 +232,10 @@ def part(k,runs):
             if p>pc:
                 fs+=[math.log(float(y)/(p*n**2))]
                 dps+=[math.log(p-pc)]
-        mplot(m)
-        fplot(dps,fs)
+        mplot(m,'b1')
+        print 'Pc is',p
+        print 'Number of sites in spanning cluster is',y
+        fplot(dps,fs,'b0')
 
 n=6
 print 'trial for n='+str(n)
@@ -242,6 +249,6 @@ ks=['a','b']
 '''
 change the number of runs here
 '''
-runs=200
+runs=100
 for k in ks:
     part(k,runs)
