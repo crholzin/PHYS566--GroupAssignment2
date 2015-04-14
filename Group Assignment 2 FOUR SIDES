@@ -172,7 +172,7 @@ def pcplot(ns,pcs,name=''):
     pylab.show()
     pylab.close()
     
-    print "pc(0) = "+ str(coefficients[-1])
+    print "pc(0) = "+ str(popt[0])
     print "r squared = " + str(r2)
 
 def fplot(dps,fs,name=''):
