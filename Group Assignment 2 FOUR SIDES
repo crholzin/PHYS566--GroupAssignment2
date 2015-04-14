@@ -165,7 +165,7 @@ def pcplot(ns,pcs,name=''):
         pylab.savefig(name+'.jpg')
         
     
-    #pylab.close()
+    pylab.close()
     
     print "pc(0) = "+ str(coefficients[-1])
     print "r squared = " + str(r2)
