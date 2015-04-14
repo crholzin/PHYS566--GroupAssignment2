@@ -158,13 +158,13 @@ def pcplot(ns,pcs,name=''):
     r2 = ssreg / sstot
     pylab.plot(nrecis, yfit,label='fitting curve')
     pylab.legend(prop={'size':7})
-    pylab.show()
+    
 
     if name!='':
         pylab.savefig(name+'.eps')
         pylab.savefig(name+'.jpg')
         
-    
+    pylab.show()
     pylab.close()
     
     print "pc(0) = "+ str(coefficients[-1])
