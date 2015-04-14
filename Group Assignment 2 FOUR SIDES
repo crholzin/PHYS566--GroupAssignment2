@@ -151,15 +151,16 @@ def pcplot(ns,pcs,name=''):
     #fit to find pc at 0
     coefficients = numpy.polyfit(nrecis, pcs,3)
     p = numpy.poly1d(coefficients)
-    yfit = p(nrecis)                        
-    ybar = numpy.sum(pcs)/len(pcs)         
+    x = numpy.linspace(0,0.2,1000)
+    yfit = p(nrecis)                       
+    ybar = numpy.sum(pcs)/len(pcs)        
     ssreg = numpy.sum((yfit-ybar)**2)  
     sstot = numpy.sum((pcs-ybar)**2)   
     r2 = ssreg / sstot
-    pylab.plot(nrecis, yfit,label='fitting curve')
+    pylab.plot(x, p(x),label='fitting curve')
     pylab.legend(prop={'size':7})
+    pylab.show()
     
-
     if name!='':
         pylab.savefig(name+'.eps')
         pylab.savefig(name+'.jpg')
