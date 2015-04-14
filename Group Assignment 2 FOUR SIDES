@@ -149,9 +149,13 @@ def pcplot(ns,pcs,name=''):
     pylab.hold(True)
     
     #fit to find pc at 0
-    coefficients = numpy.polyfit(nrecis,pcs,3)
-    polynomial = numpy.poly1d(coefficients)
-    yfit = polynomial(nrecis)
+    coefficients = numpy.polyfit(nrecis, pcs,3)
+    p = numpy.poly1d(coefficients)
+    yfit = p(nrecis)                        
+    ybar = numpy.sum(pcs)/len(pcs)         
+    ssreg = numpy.sum((yfit-ybar)**2)  
+    sstot = numpy.sum((pcs-ybar)**2)   
+    r2 = ssreg / sstot
     pylab.plot(nrecis, yfit,label='fitting curve')
     pylab.legend(prop={'size':7})
     pylab.show()
@@ -163,7 +167,8 @@ def pcplot(ns,pcs,name=''):
     
     #pylab.close()
     
-    print "pc(0) = "+ str(coefficients[3])
+    print "pc(0) = "+ str(coefficients[-1])
+    print "r squared = " + str(r2)
 
 def fplot(dps,fs,name=''):
     '''
