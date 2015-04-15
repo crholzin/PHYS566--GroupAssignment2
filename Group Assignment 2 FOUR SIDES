@@ -143,7 +143,7 @@ def pcplot(ns,pcs,name=''):
     nrecis=[1.0/n for n in ns]
     pylab.figure()
     pylab.plot(nrecis,pcs,'bo', label='experimental data')
-    pylab.legend(prop={'size':7})
+    pylab.legend(prop={'size':9},loc=2)
     #pylab.grid()
     pylab.xlabel('1/n')
     pylab.ylabel('Pc')
@@ -159,7 +159,7 @@ def pcplot(ns,pcs,name=''):
     sstot = numpy.sum((pcs-ybar)**2)   
     r2 = ssreg / sstot
     pylab.plot(x, p(x),label='fitting curve')
-    pylab.legend(prop={'size':7})
+    pylab.legend(prop={'size':9},loc=2)
     pylab.show()
     
     if name!='':
