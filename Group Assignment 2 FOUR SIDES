@@ -147,13 +147,16 @@ def pcplot(ns,pcs,name=''):
     nrecis=[1.0/n for n in ns]
     pylab.figure()
     pylab.plot(nrecis,pcs,'bo', label='experimental data')
-    pylab.legend(prop={'size':7})
+    pylab.plot([0.5,1],[0.75,1],'ro',label='known conditions')
+    pylab.legend(prop={'size':9},loc=2)
     #pylab.grid()
     pylab.xlabel('1/n')
     pylab.ylabel('Pc')
     pylab.hold(True)
     
     #fit to find pc at 0
+    nrecis += [0.5,1]
+    pcs += [0.75,1]
     nrecisnp = numpy.asarray(nrecis)
     popt, pcov = curve_fit(func, nrecisnp, pcs)    
     yfit = func(nrecisnp,*popt)                       
@@ -161,10 +164,10 @@ def pcplot(ns,pcs,name=''):
     ssreg = numpy.sum((yfit-ybar)**2)  
     sstot = numpy.sum((pcs-ybar)**2)   
     r2 = ssreg / sstot
-    x = numpy.linspace(0,0.3,1000)
+    x = numpy.linspace(0,1,1000)
     pylab.plot(x, func(x,*popt),label='fitting curve')
     pylab.legend(prop={'size':9},loc=2)
-    pylab.xlim([0.0,0.3])
+    pylab.xlim([0.0,1.0])
     
     if name!='':
         pylab.savefig(name+'.eps')
