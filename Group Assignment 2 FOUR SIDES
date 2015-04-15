@@ -3,6 +3,7 @@ import pylab
 import numpy
 import math
 import matplotlib as mpl
+from scipy.optimize import curve_fit
 
 import sys
 sys.setrecursionlimit(10**9)
