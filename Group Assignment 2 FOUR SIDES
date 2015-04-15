@@ -136,9 +136,9 @@ def mplot(m,name=''):
     pylab.show()
     pylab.close()
     
-# Define an exponential function for fitting
-def func(x, b,lamda):
-    return 1-numpy.exp(-lamda*x)+b    
+# Define a quadratic polynomial for fitting
+def func(x, a,b,c):
+    return   a*x**2+b*x+c
     
 def pcplot(ns,pcs,name=''):
     '''
@@ -148,7 +148,6 @@ def pcplot(ns,pcs,name=''):
     nrecis=[1.0/n for n in ns]
     pylab.figure()
     pylab.plot(nrecis,pcs,'bo', label='experimental data')
-    pylab.plot([0.5,1],[0.75,1],'ro',label='known condition')
     pylab.legend(prop={'size':9},loc=2)
     #pylab.grid()
     pylab.xlabel('1/n')
@@ -156,19 +155,17 @@ def pcplot(ns,pcs,name=''):
     pylab.hold(True)
     
     #fit to find pc at 0
-    nrecis += [0.5,1]
-    pcs += [0.75,1]
     nrecisnp = numpy.asarray(nrecis)
-    popt, pcov = curve_fit(func, nrecisnp, pcs)    
+    popt, pcov = curve_fit(func, nrecisnp, pcs,[-1,1,1])    
     yfit = func(nrecisnp,*popt)                       
     ybar = numpy.sum(pcs)/len(pcs)        
     ssreg = numpy.sum((yfit-ybar)**2)  
     sstot = numpy.sum((pcs-ybar)**2)   
     r2 = ssreg / sstot
-    x = numpy.linspace(0,1,1000)
+    x = numpy.linspace(0,0.2,1000)
     pylab.plot(x, func(x,*popt),label='fitting curve')
     pylab.legend(prop={'size':9},loc=2)
-    pylab.xlim([0.0,1])
+    pylab.xlim([0.0,0.2])
     
     if name!='':
         pylab.savefig(name+'.eps')
@@ -177,7 +174,7 @@ def pcplot(ns,pcs,name=''):
     pylab.show()
     pylab.close()
     
-    print "pc(0) = "+ str(popt[0])
+    print "pc(0) = "+ str(popt[-1])
     print "r squared = " + str(r2)
 
 def fplot(dps,fs,name=''):
